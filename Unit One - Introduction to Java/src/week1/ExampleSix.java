@@ -4,6 +4,9 @@ public class ExampleSix {
   public static void main(String[] args) {
     int x = 1;
     int y = 3;
+    int s = 5; 
+    int g = 3; 
+    int f = 3; 
     double z = 1;
 
     x = x + 1; // (x = 2) take x add 1 to it and assign it back to x
@@ -21,15 +24,11 @@ public class ExampleSix {
     y--; // decrease by 1
 
 
-
-    int s = 5; 
     s++; 
     ++s; 
     s--; 
     --s; 
 
-    int g = 3; 
-    int f = 3; 
 
     int test1 = 2 * g++;  //does ++ after 2 * g 
     int test2 = 2 * ++f;  // does ++ before 2 * f 
