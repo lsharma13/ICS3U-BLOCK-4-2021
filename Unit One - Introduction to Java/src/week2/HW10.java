@@ -7,6 +7,7 @@ public class HW10 {
         double b = 4; 
         double c = 6; 
         double y = 0;   // because roots are when y = 0 
+        double x = 1; 
 
 
         double x = Math.sqrt((y - c - (b * x)) / a); 
