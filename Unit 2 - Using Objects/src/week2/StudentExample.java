@@ -17,6 +17,11 @@ public class StudentExample {
         max.addTest(98);
         max.addTest(67); 
 
+        System.out.println(max.getName() + "has an average of" + max.getAverage());
+
+
+        Student david = new Student ("David", "565858"); 
+
         
 
 
