@@ -23,7 +23,7 @@ public class StringExamples {
         System.out.println(x.substring(2)); 
         System.out.println(x.substring(2,4));   //starts at index 2 and then goes to index 4 but not including 3
         System.out.println(x.substring(2,3)); 
-        System.out.println("Friday".substring(1, "Friday", length)); 
+        System.out.println("Friday".substring(1, "Friday", length())); 
 
 
     } 

@@ -20,7 +20,7 @@ public class StudentExample {
         System.out.println(max.getName() + "has an average of" + max.getAverage());
 
 
-        Student david = new Student ("David", "565858"); 
+        //Student david = new Student ("David", "565858"); 
 
         
 
