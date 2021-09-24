@@ -3,7 +3,7 @@ package week2;
 public class CodingBat {
     
     
-    public String extraEnd(String str) {    //trying to find last two letters repeated 3 times 
+  public String extraEnd(String str) {    //trying to find last two letters repeated 3 times 
         String lastTwo = str.substring(str.length() -2); //length minus 2 to get last two variables 
         return lastTwo + lastTwo + lastTwo; 
         
@@ -13,18 +13,17 @@ public class CodingBat {
        public String firstHalf(String str) {    //trying to find the first half of an even word 
         String firstHalf = str.substring(0, str.length()/2); //meaning start at 0 and go until length/2 
         return firstHalf; 
-       }
+       } 
         
 
-        // public String left2(String str) {   //same thing as below 
-        return str.substring(2, str.length()) + str.substring (0 , 2);    //trying to get first two letters at the end of the rest 
+       //trying to get first two letters at the end of the rest 
     
-  
-        public String left2(String str) {   //same thing as above 
+          public String left2(String str) {   //same thing as above 
             String rest = str.substring(2); 
             String first2 = str.substring(0,2); 
             return rest + first2; 
-          }
+          } 
+          
 
           public String makeAbba(String a, String b) {  //in pattern abba 
             return a + b + b + a; 
@@ -63,15 +62,21 @@ public class CodingBat {
           }
 
           public String withoutEnd(String str) {    //no first character and no second character 
-            String noClosing = str.substring(str.length() - 1);     // no closing character 
             String noOpening = str.substring(1, (str.length () -1)); //only from the second character to no closing character
             return noOpening; 
           }
           
-          
-}} 
+          public String middleThree(String str) {
+            return str.substring(((str.length()/2) - 1), ((str.length()/2) + 2));   //because there is nothing that is a double we are assuming it is a double
+            
+        }
 
+        public String middleTwo(String str) {
+          return str.substring((str.length()/2 -1), (str.length()/2+1)); 
+        }
+        
+        
           
-          
-    
-          
+}
+
+
