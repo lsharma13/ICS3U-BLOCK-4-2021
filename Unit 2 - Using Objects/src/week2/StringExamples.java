@@ -6,7 +6,9 @@ public class StringExamples {
         String s1 = "Max";   //String literal 
         String s2 = "Fred"; //String literal
         String s4 = "Max";  //String literal
+            System.out.println(s4);
         String s3 = new String("Kyle"); //String object 
+            System.out.println(s3);
         String s5 = new String("Max");  //String object
 
 
@@ -23,7 +25,7 @@ public class StringExamples {
         System.out.println(x.substring(2)); 
         System.out.println(x.substring(2,4));   //starts at index 2 and then goes to index 4 but not including 3
         System.out.println(x.substring(2,3)); 
-        System.out.println("Friday".substring(1, "Friday", length())); 
+        System.out.println("Friday".substring(1,"Friday".length())); 
 
 
     } 

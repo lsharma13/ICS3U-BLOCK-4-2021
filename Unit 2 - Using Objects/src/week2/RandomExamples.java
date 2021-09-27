@@ -5,6 +5,7 @@
           // int x = 6.2;
           // int y = mystery();
           double z = mystery();
+            System.out.println(z);
     
           String s = "This is a " + 1 + " String";
           String s2 = "This is another " + true + " String";
