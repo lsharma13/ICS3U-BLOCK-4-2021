@@ -2,13 +2,16 @@ package week3;
 
 public class ExtraPractice7 {
     public static void main(String[] args) {
-        exampleSeven(); 
+        String str = questionSeven ("AP COMP SCI","MP"); 
+        System.out.println(str);
     }
         
 
-            public static void exampleSeven(String1, String2) {
-            String String1 = str.substring(str.length()); 
-            String String2 = str.substring(str.length()); 
-            System.out.println(String1 + String2);
-            }
+            private static String questionSeven(String string1, String string2) {
+                String str1 = string1.substring(string1.length()); 
+                String str2 = string2.substring(string2.length()); 
+                
+                return str1 + str2;
+    }
+
 }
