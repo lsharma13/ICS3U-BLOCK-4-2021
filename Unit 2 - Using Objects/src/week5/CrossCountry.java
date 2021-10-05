@@ -18,18 +18,30 @@ public class CrossCountry {
         String mileOne, mileTwo, finish; 
         String splitTwo, splitThree;
 
-        /**
-         * get the first and last name of the runner
-         * get the mileOne, mileTwo and finish times for the runner
-         */
+        System.out.print("Please enter your first name: ");
+        firstName = in.nextLine(); 
+        System.out.print("Please enter your last name: ");
+        lastName = in.nextLine(); 
+
+        System.out.print("Please enter your mile One time: ");
+        mileOne = in.nextLine(); 
+        System.out.print("Please enter your mile Two time: ");
+        mileTwo = in.nextLine(); 
+        System.out.print("Please enter your finish time: ");
+        finish = in.nextLine(); 
 
          splitTwo = subtractTimes(mileTwo, mileOne); 
          splitThree = subtractTimes(finish, mileTwo); 
 
-         /**
-          * display a summary for the runner 
-          * a bunch of prints 
-          */
+
+        System.out.println("Name: " + firstName + " " + lastName);
+
+        System.out.println("Mile One: " + mileOne);
+        System.out.println("Split Two: " + splitTwo);
+        System.out.println("Split Three: " + splitThree);
+
+        System.out.println("Finish Time: " + splitThree);
+
     }
 
     private static String subtractTimes(String endTime, String startTime) {
@@ -43,17 +55,33 @@ public class CrossCountry {
     }
 
     private static String convertToTime(double timeInSeconds) {
-        return null;
-        /**
-         * write this 
-         */
+       int minutes = getMinutes(timeInSeconds);
+       double seconds = getSeconds(timeInSeconds); 
+
+        return String.format("%d:%06.3f", minutes, seconds); 
+    
+    }
+
+    private static double getSeconds(double timeInSeconds) {
+        return (timeInSeconds%60);
+    }
+
+    private static int getMinutes(double timeInSeconds) {
+        return (int) (timeInSeconds/60);
     }
 
     private static double convertToSeconds(String time) {
-        return 0;
+        String seconds1 = time.substring(0, time.indexOf(":")); //in minutes
+        String seconds2 = time.substring(time.indexOf(":") + 1);// in seconds 
+        double time1 = Double.parseDouble(seconds1)*60; //convert to seconds 
+        double time2 = Double.parseDouble(seconds2);   
+        double finalTime = time1 + time2;   //add
+        return finalTime; 
+    
         /**
-         * write this 
-         * substring and index of 
+         * seconds1 = 5
+         * seconds2 = 07.658
+         * 5:07.658
          */
     }
     
@@ -61,7 +89,7 @@ public class CrossCountry {
 
 /**
  * explanation of what it does
- * @param endTime = purpose
+ * @param endTime = purpose 
  * @param startTime = purpose
  * @return = purpose 
  */
