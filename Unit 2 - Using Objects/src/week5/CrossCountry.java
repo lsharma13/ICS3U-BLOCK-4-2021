@@ -62,7 +62,7 @@ public class CrossCountry {
      * @param endTime = mile two time 
      * @param startTime = mile one time
      * @return = converting the difference in seconds into time 
-     * this method converts start time and end time to seconds, and then uses that to calculate the difference in seconds 
+     * this method calls method to convert start time and end time to seconds, and then uses that to calculate the difference in seconds 
      */
 
 
@@ -76,7 +76,7 @@ public class CrossCountry {
     /**
      * @param timeInSeconds = difference in seconds above 
      * @return = converts to the preferred format (mm:ss.sss)
-     * this method converts the time in seconds into both minutes and seconds and converts it to the format preferred (mm:ss.sss)
+     * this method calls methods to convert the time in seconds into both minutes and seconds and converts it to the format preferred (mm:ss.sss)
      */
     
 
