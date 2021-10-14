@@ -8,7 +8,7 @@ public class UsingScanner {
        // exampleOne(in); 
         exampleTwo(in); 
         in.close();     //closing in 
-        
+    
     }
 
     private static void exampleTwo(Scanner in) {
