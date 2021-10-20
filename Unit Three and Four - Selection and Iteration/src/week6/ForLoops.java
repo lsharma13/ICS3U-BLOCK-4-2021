@@ -63,8 +63,7 @@ private static int getNumber() {
             return result; 
         else{
             System.out.println("Only numbers between 1 and 10 please: "); 
-        }
-        catch(Exception ex){
+        } catch(Exception ex){
         System.out.println("Only numbers between 1 and 10 please: "); 
     }
 }
