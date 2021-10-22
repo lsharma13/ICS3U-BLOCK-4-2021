@@ -1,5 +1,7 @@
 package week7;
 
+import java.util.Scanner;
+
 public class CrazyEights {
     private static final double NUM_SUITS = 4;
     private static final double CARDS_PER_SUIT = 13;
@@ -16,17 +18,73 @@ public class CrazyEights {
         getSuit(); 
         getFace(); 
         getCard(); 
-        System.out.println("Player: " + getCard() +  " "  + getCard() +  " "  + getCard() +  " "  + getCard() +  " "  + getCard());
-        System.out.println("Deck:" + "" + getDeckCard(getCard()));
+        String playerHand = " " + getCard() +  " "  + getCard() +  " "  + getCard() +  " "  + getCard() +  " "  + getCard(); 
+        String initialDeckCard = getInitialDeckCard(getCard()); 
+        Scanner in = new Scanner(System.in);
+        System.out.println("Player: " + playerHand); 
+        System.out.println("Top Deck Card:" + " " + initialDeckCard);
+        System.out.println(canPlay(playerHand, initialDeckCard)); 
+        getCardsToDiscard(in, playerHand); 
+        canPlay(playerHand, initialDeckCard); 
+}
+//private static String discard(Scanner in, String playerHand) {
+     //??wait for james 
+
+      //}
+   
+
+
+private static boolean canPlay(String playerHand, String initialDeckCard) {
+   boolean isCanPlay = true;
+   if(playerHand.indexOf(initialDeckCard) < 0){
+      isCanPlay = false;  
+   }else 
+   isCanPlay = true; 
+   return(isCanPlay); 
+   }
+
+private static String getCardsToDiscard(Scanner in, String playerHand) {
+   final String VALID_CARDS = "AS2S3S4S5S6S7S8S9S10SJSQSKSAC2C3C4C5C6C7C8C9C10CJCQCKCAD2D3D4D5D6D7D8D9D10DJDQDKDAH2H3H4H5H6H7H8H9H10HJHQHKH";
+   boolean validInput = false;
+   String cards = "";
+   while (!validInput) {
+      System.out.println("Please enter the cards to replace: (ex. 7H KD): ");
+      cards = in.nextLine().toUpperCase();
+      if (VALID_CARDS.indexOf(cards) < 0) {
+         System.out.println("Not a valid card: " + cards);
+      } else if (playerHand.indexOf(cards) < 0)
+         System.out.println("You don't have a " + cards);
+      else if (playerHand.indexOf(cards) >= 0){
+         validInput = true;
+      } else {
+         int space = cards.indexOf(" ");
+
+         String card1 = cards.substring(0, space);
+         String card2 = cards.substring(space + 1);
+         if (VALID_CARDS.indexOf(card1) < 0)
+            System.out.println("Not a valid card: " + card1);
+         else if (VALID_CARDS.indexOf(card2) < 0)
+            System.out.println("Not a valid card: " + card2);
+         else if (playerHand.indexOf(card1) < 0)
+            System.out.println("You don't have a " + card1);
+         else if (playerHand.indexOf(card2) < 0)
+            System.out.println("You don't have a " + card2);
+         else if (card1.equals(card2))
+            System.out.println("You cannot discard the same card.");
+         else
+            validInput = true;
+      }
+   }
+   return cards;
 }
 
-private static String getDeckCard(String deckCard) {
+private static String getInitialDeckCard(String initialDeckCard) {
     while(true){
-    deckCard = getFace() + getSuit();
-        if(deckCard.indexOf("8") >= 0){
+      initialDeckCard = getFace() + getSuit();
+        if(initialDeckCard.indexOf("8") >= 0){
             getCard(); 
         }else 
-        return deckCard; 
+        return initialDeckCard; 
     }
 }
 
@@ -62,6 +120,7 @@ private static String getSuit() {
     String card = getFace() + getSuit();
     return card;
  }
+}
 
+   
 
- }
