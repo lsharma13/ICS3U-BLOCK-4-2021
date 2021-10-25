@@ -18,56 +18,79 @@ public class CrazyEights {
         getSuit(); 
         getFace(); 
         getCard(); 
-        String playerHand = " " + getCard() +  " "  + getCard() +  " "  + getCard() +  " "  + getCard() +  " "  + getCard(); 
+        int playerPoints = 0; 
+         gameOver( playerPoints); 
+         String playerHand = ""; 
+         getPlayerHand(playerHand); 
+       // String playerHand = " " + getCard() +  " "  + getCard() +  " "  + getCard() +  " "  + getCard() +  " "  + getCard(); 
         String initialDeckCard = getInitialDeckCard(getCard()) + " "; 
         Scanner in = new Scanner(System.in);
-        System.out.println("Player: " + playerHand); 
-        System.out.println("Top Deck Card:" + " " + initialDeckCard);
-        
-        
-        canPlay(in, playerHand, initialDeckCard); 
-       
-    }
-   
+        //System.out.println("Player: " + playerHand); 
+        //System.out.println("Top Deck Card:" + " " + initialDeckCard);
+         while(!gameOver(playerPoints)){
+            canPlay(in, playerHand, initialDeckCard); 
+         }
 
-private static boolean canPlay(Scanner in, String playerHand, String initialDeckCard) {
+      }
+   
+       
+   
+private static boolean gameOver(int playerPoints) {
+   return playerPoints >= 100; //|| c1Points >= 100 || c2Points >= 100;
+   }
+
+
+private static String canPlay(Scanner in, String playerHand, String initialDeckCard){
       final String VALID_CARDS = "AS2S3S4S5S6S7S8S9S10SJSQSKSAC2C3C4C5C6C7C8C9C10CJCQCKCAD2D3D4D5D6D7D8D9D10DJDQDKDAH2H3H4H5H6H7H8H9H10HJHQHKH";   String cards = "";
-      boolean validInput = false; 
-      String deckCardSuit = initialDeckCard.substring(initialDeckCard.length() - 2); 
-      String deckCardRank = initialDeckCard.substring(0, initialDeckCard.length() - 2); 
+         boolean validInput = false;
+         String deckCardSuit = initialDeckCard.substring(initialDeckCard.length() - 2); 
+         String deckCardRank = initialDeckCard.substring(0, initialDeckCard.length() - 2); 
         while(!validInput){ 
          if(playerHand.indexOf(deckCardSuit) >= 0){
-            System.out.println("You can play a card with the same suit");
+            //System.out.println("You can play a card with the same suit");
             System.out.print("Please enter the cards to replace: (ex. 7H KD): ");
             cards = in.nextLine().toUpperCase();
-            String replacedPlayer = playerHand.replace(cards + " ", "").trim();
-            System.out.println("Hand:" + " " + replacedPlayer); 
+               playerHand = playerHand.replace(cards + " ", "").trim();
+               System.out.println("Hand:" + " " + playerHand); 
+           // String replacedPlayer = playerHand.replace(cards + " ", "").trim();
+            //String updatePlayerDeck = replacedPlayer.replace(cards + " ", ""); 
+            //System.out.println(updatePlayerDeck);
 
-            initialDeckCard += " " + cards;  
-            System.out.println("Deck:" + initialDeckCard.replace(initialDeckCard, initialDeckCard.substring(initialDeckCard.indexOf(" ")))); 
-         }else if(playerHand.indexOf(deckCardRank) >= 0){
-            System.out.println("You can play a card with the same ranK");
+            initialDeckCard = cards; 
+            System.out.println("Deck:" + " " + initialDeckCard);
+            }   
+
+            //initialDeckCard += " " + cards;  
+            //System.out.println("Deck:" + initialDeckCard.replace(initialDeckCard, initialDeckCard.substring(initialDeckCard.indexOf(" ")))); 
+            else if(playerHand.indexOf(deckCardRank) >= 0){
+            //System.out.println("You can play a card with the same ranK");
             System.out.print("Please enter the cards to replace: (ex. 7H KD): ");
             cards = in.nextLine().toUpperCase();
-            String replacedPlayer = playerHand.replace(cards + " ", "").trim();
-            System.out.println("Hand:" + " " + replacedPlayer); 
-
-            initialDeckCard += " " + cards; 
-            System.out.println("Deck:" + initialDeckCard.replace(initialDeckCard, initialDeckCard.substring(initialDeckCard.indexOf(" "))));
+               playerHand = playerHand.replace(cards + " ", "").trim();
+               System.out.println("Hand:" + " " + playerHand);
+            initialDeckCard = cards; 
+            System.out.println("Deck:" + " " + initialDeckCard);
+           // initialDeckCard += " " + cards; 
+            //System.out.println("Deck:" + initialDeckCard.replace(initialDeckCard, initialDeckCard.substring(initialDeckCard.indexOf(" "))));
 
          }else if(playerHand.indexOf("8") >= 0){
-            System.out.println("You can play an 8");
+            //System.out.println("You can play an 8");
             System.out.print("Please enter the cards to replace: (ex. 7H KD): ");
             cards = in.nextLine().toUpperCase();
-            String replacedPlayer = playerHand.replace(cards + " ", "").trim();
-            System.out.println("Hand:" + " " + replacedPlayer); 
+            
+               playerHand = playerHand.replace(cards + " ", "").trim();
+               System.out.println("Hand:" + " " + playerHand); 
 
-            initialDeckCard += " " + cards; 
-            System.out.println("Deck:" + initialDeckCard.replace(initialDeckCard, initialDeckCard.substring(initialDeckCard.indexOf(" "))));
+            initialDeckCard = cards; 
+            System.out.println("Deck:" + " " + initialDeckCard);
+           // initialDeckCard += " " + cards; 
+           // System.out.println("Deck:" + initialDeckCard.replace(initialDeckCard, initialDeckCard.substring(initialDeckCard.indexOf(" "))));
          }else {
             System.out.println("You cannot play. Card will be drawn."); 
             System.out.println(playerHand + " " + getCard());       
            }
+           return playerHand;
+         } 
          while (!validInput) {
             cards = in.nextLine().toUpperCase();
             if (VALID_CARDS.indexOf(cards) < 0) {
@@ -95,21 +118,30 @@ private static boolean canPlay(Scanner in, String playerHand, String initialDeck
                   validInput = true;
             }
          }
-   }
-   return validInput; 
+         return playerHand;          
 }
 
 
 
 private static String getInitialDeckCard(String initialDeckCard) {
     while(true){
-      initialDeckCard = getFace() + getSuit();
+      String initialFace = getFace(); 
+      String initialSuit = getSuit(); 
+      initialDeckCard = initialFace + initialSuit; 
         if(initialDeckCard.indexOf("8") >= 0){
-            getCard(); 
+            initialDeckCard = getCard(); 
+            System.out.println("Top Deck Card:" + " " + initialDeckCard);
         }else 
-        return initialDeckCard; 
+        System.out.println("Top Deck Card:" + " " + initialDeckCard);
     }
 }
+
+private static void getPlayerHand(String playerHand) {
+   playerHand = " " + getCard() +  " "  + getCard() +  " "  + getCard() +  " "  + getCard() +  " "  + getCard();
+   System.out.println("Player: " + playerHand); 
+   }
+
+
 
 private static String getSuit() {
     int suit = (int) (Math.random() * NUM_SUITS);
