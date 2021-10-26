@@ -14,6 +14,7 @@ public class CrazyEights2 {
     private static final String QUEEN = "Q";
     private static final String KING = "K";
     private static final int NUM_CARDS_TO_START = 5;
+    private static final String VALID_CARDS = "AS2S3S4S5S6S7S8S9S10SJSQSKSAC2C3C4C5C6C7C8C9C10CJCQCKCAD2D3D4D5D6D7D8D9D10DJDQDKDAH2H3H4H5H6H7H8H9H10HJHQHKH"; 
 
     public static void main(String[] args) {   
     int playerPoints = 0, c1Points = 0, c2Points = 0;
@@ -46,10 +47,7 @@ public class CrazyEights2 {
    
          }
          System.out.println("Hand:" + " " + playerHand);
-         //System.out.println("Computer 1 Hand: XX XX XX XX XX");
-         //System.out.println("Computer 1 Hand: XX XX XX XX XX");
    
-            
 
             initialDeckCard = getCard();
             if(initialDeckCard.indexOf("8") >= 0){
@@ -65,43 +63,44 @@ public class CrazyEights2 {
             initialDeckCard = temp.substring(temp.indexOf(" ") + 1);
    
       }
-      return "17-0-8";
+      return playerTallie(playerHand) + "-" + playerTallie(c1Hand) + "-" + playerTallie(c2Hand);
+ 
     }
    
-      private static String processComputer(String myHand, String topCard, String oppHand1, String oppHand2) {
-         return null;
-      }
+      //private static String processComputer(String myHand, String topCard, String oppHand1, String oppHand2) {
+         //return null;
+      
    
-      private static String processPlayer(Scanner in, String playerHand, String initialDeckCard) {
-        final String VALID_CARDS = "AS2S3S4S5S6S7S8S9S10SJSQSKSAC2C3C4C5C6C7C8C9C10CJCQCKCAD2D3D4D5D6D7D8D9D10DJDQDKDAH2H3H4H5H6H7H8H9H10HJHQHKH";   
-        String cards = "";               
+      private static String processPlayer(Scanner in, String playerHand, String initialDeckCard) {               
         boolean validInput = false;
         while(!validInput){ 
               String deckCardSuit = initialDeckCard.substring(initialDeckCard.length() - 1); 
               String deckCardRank = initialDeckCard.substring(0, initialDeckCard.length() - 1);
            if(playerHand.indexOf(deckCardSuit) >= 0 || playerHand.indexOf(deckCardRank) >= 0 || playerHand.indexOf("8") >= 0){
-              while(!validInput){ 
-              System.out.print("Please enter the cards to replace: (ex. 7H KD): ");
-              cards = in.nextLine().toUpperCase();  
-              if (VALID_CARDS.indexOf(cards) < 0) {
-                 System.out.println("Not a valid card: " + cards);
-              } else if (playerHand.indexOf(cards) < 0){ 
-                 System.out.println("You don't have a " + cards);
-              }else if(cards.indexOf("8") >= 0){
-                 ifEight(in, initialDeckCard);  
-              } else {
-                 validInput = true; 
-              }
-              }
-                 playerHand = playerHand.replace(cards + " ", "").trim();
-                 System.out.println("Hand:" + " " + playerHand);
-                 initialDeckCard = cards; 
-                 System.out.println("Deck:" + " " + initialDeckCard);
+            System.out.print("Please enter the card to play: (ex. 7H KD): ");
+            String cards = in.nextLine().toUpperCase();  
+            String playedCardSuit = cards.substring(cards.length() - 1); 
+            String playedCardRank = cards.substring(0, cards.length() - 1); 
+            if (VALID_CARDS.indexOf(cards) < 0) {
+               System.out.println("Not a valid card: " + cards);
+            } else if (playerHand.indexOf(playedCardSuit) < 0 || playerHand.indexOf(playedCardRank) < 0 ){ 
+               System.out.println("You don't have a " + cards);
+            }else if(cards.indexOf("8") >= 0){
+               ifEight(in, initialDeckCard);  
+               playerHand = playerHand.replace(cards + " ", ""); 
+               System.out.println(playerHand);
+            } else {
+               initialDeckCard = cards;
+               playerHand = playerHand.replace(cards + " ", "");
+               System.out.println("Hand: " + playerHand);
+               System.out.println("Deck " + initialDeckCard);
+            }
+
            }else {
               System.out.println("You cannot play. Card will be drawn.");
               playerHand += " " + getCard();  
               System.out.println(playerHand);  
-              System.out.println("Deck" + " " + initialDeckCard);     
+              System.out.println("Deck" + " " + initialDeckCard);  
              }        
         }
         return playerHand;  
@@ -146,23 +145,11 @@ private static void ifEight(Scanner in, String initialDeckCard) {
 
 
 
-   
-
-   private static String getInitialSuit() {
-      String initialSuit = getSuit(); 
-      return initialSuit; 
-   }
-
-   private static String getInitialRank() {
-      String initialRank = getFace();  
-      return initialRank; 
-   }
-
-private static String getPlayerHand(String playerHand) {
+/*private static String getPlayerHand(String playerHand) {
    playerHand +=  getCard() + " " + getCard() + " " + getCard() + " " + getCard() + " " + getCard(); 
    System.out.println("Player: " + playerHand); 
    return playerHand; 
-   }
+   }*/
 
 
 private static String getSuit() {
@@ -197,5 +184,44 @@ private static String getSuit() {
  private static String getCard() {
     String card = getFace() + getSuit();
     return card;
+ }
+
+private static int playerTallie(String playerCards) {
+    int p1Points = 0;
+
+    /**
+     * Cards 2 through 9 excluding 8 are worth their face value Ace are worth 1
+     * eights are worth 50 10 to kind worth 10
+     */
+
+    for (int i = 0; i < playerCards.length(); i++) {
+
+       if (playerCards.indexOf(ACE) >= 0) {
+          p1Points += 1;
+       } else if (playerCards.indexOf(KING) >= 0) {
+          p1Points += 10;
+       } else if (playerCards.indexOf(QUEEN) >= 0) {
+          p1Points += 10;
+       } else if (playerCards.indexOf(JACK) >= 0) {
+          p1Points += 10;
+       } else if (playerCards.indexOf(10) >= 0) {
+          p1Points += 10;
+       } else if (playerCards.indexOf("2") >= 0) {
+          p1Points += 2;
+       } else if (playerCards.indexOf("3") >= 0) {
+          p1Points += 3;
+       } else if (playerCards.indexOf("4") >= 0) {
+          p1Points += 4;
+       } else if (playerCards.indexOf("5") >= 0) {
+          p1Points += 5;
+       } else if (playerCards.indexOf("6") >= 0) {
+          p1Points += 6;
+       } else if (playerCards.indexOf("7") >= 0) {
+          p1Points += 7;
+       } else {
+          p1Points += 9;
+       }
+    }
+    return p1Points;
  }
 }
