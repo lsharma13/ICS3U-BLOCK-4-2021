@@ -37,7 +37,6 @@ public class CrazyEights2 {
       String playerHand = "";
       String opp1Hand = "";
       String opp2Hand = "";
-      //String cHand = ""; 
       String temp = "";
 
       String initialDeckCard = "";
@@ -49,13 +48,14 @@ public class CrazyEights2 {
          opp2Hand += getCard() + " "; 
       }
       System.out.println("Hand:" + " " + playerHand);
-
+      
+      
       initialDeckCard = getCard();
       if (initialDeckCard.indexOf("8") >= 0) {
          initialDeckCard = getCard();
-         //System.out.println("Deck:" + " " + initialDeckCard);
+         System.out.println("New Deck:" + " " + initialDeckCard);
       } else {
-         System.out.println("Deck:" + " " + initialDeckCard);
+         //System.out.println("Deck:" + " " + initialDeckCard);
       }
 
       while (playerHand.length() >= 0 || opp1Hand.length() >= 0 || opp2Hand.length() >= 0) {
@@ -72,13 +72,45 @@ public class CrazyEights2 {
          opp2Hand = temp.substring(0, temp.indexOf("-"));
          initialDeckCard = temp.substring(temp.indexOf("-") + 1);
       }
-
-      return playerTotal(playerHand) + "-" + playerTotal(opp1Hand) + "-" + playerTotal(opp2Hand);
+      String points = playerTotal(playerHand) + "-" + playerTotal(opp1Hand) + "-" + playerTotal(opp2Hand);
+      return points;
 
    }
       
    
-     private static String processComputer(String cHand, String initialDeckCard, String opp1Hand, String opp2Hand) {
+     private static int playerTotal(String playerHand) {
+        int points = 0; 
+      if(playerHand.indexOf(ACE) >= 0){
+         points+= 1;
+      }if (playerHand.indexOf("2") >= 0){
+         points+= 2; 
+      }if (playerHand.indexOf("3") >= 0){
+         points+= 3; 
+      }if (playerHand.indexOf("4") >= 0){
+         points+= 4; 
+      }if (playerHand.indexOf("5") >= 0){
+         points+= 5; 
+      }if (playerHand.indexOf("6") >= 0){
+         points+= 6; 
+      }if (playerHand.indexOf("7") >= 0){
+         points+= 7; 
+      }if (playerHand.indexOf("8") >= 0){
+         points+= 50; 
+      }if (playerHand.indexOf("9") >= 0){
+         points+= 9; 
+      }if (playerHand.indexOf("10") >= 0){
+         points+= 10; 
+      }if (playerHand.indexOf(JACK) >= 0){
+         points+= 10; 
+      }if (playerHand.indexOf(QUEEN) >= 0){
+         points+= 10; 
+      }if (playerHand.indexOf(KING) >= 0){
+         points+= 10; 
+   }
+   System.out.println(points);
+   return points;
+}
+   private static String processComputer(String cHand, String initialDeckCard, String opp1Hand, String opp2Hand) {
          cHand = validHand(cHand,initialDeckCard) + " ";
          int index = 0;
          String initialCard = "";
@@ -86,9 +118,9 @@ public class CrazyEights2 {
          String initialDeckCardRank= initialDeckCard.substring(0,initialDeckCard.length()-1);
          String initialDeckCardSuit = initialDeckCard.substring(initialDeckCard.length()-1);
    
-         if (cHand.indexOf(initialDeckCardRank)!=-1 || cHand.indexOf(initialDeckCardSuit)!=-1 || cHand.indexOf("8")!=-1){
-            if (opp1Hand.indexOf(" ")==-1 || opp2Hand.indexOf(" ")==-1){
-            while (cHand.indexOf(initialDeckCardRank,index)!=-1){
+         if (cHand.indexOf(initialDeckCardRank)>=0 || cHand.indexOf(initialDeckCardSuit)>=0 || cHand.indexOf("8")>=0){
+            if (opp1Hand.indexOf(" ") < 0|| opp2Hand.indexOf(" ") < 0){
+            while (cHand.indexOf(initialDeckCardRank,index) >= 0){
                   index = cHand.indexOf(initialDeckCardRank,index);
                   initialCard = cHand.substring(index, cHand.indexOf(" ", index));
                   if (!(initialCard.substring(initialCard.length()-1).equals(initialDeckCardSuit))){
@@ -96,14 +128,14 @@ public class CrazyEights2 {
                   }
                   index++;
                   //finds if we can change the suit via and 8
-               } if (cHand.indexOf("8")!=-1){
+               } if (cHand.indexOf("8")>=0){
                   suit = getHighSuit(cHand, initialDeckCardRank);
                   return cHand.replaceFirst(cHand.substring(cHand.indexOf("8"), cHand.indexOf("8")+2), "").trim() + "-8"+suit;
                }
             //finds a card with the same suit 
-           }if (cHand.indexOf(initialDeckCardSuit)!=-1){
+           }if (cHand.indexOf(initialDeckCardSuit) >= 0){
             index = 0;
-            while (cHand.indexOf(initialDeckCardSuit, index)!=-1){
+            while (cHand.indexOf(initialDeckCardSuit, index)>= 0){
                index = cHand.indexOf(initialDeckCard.substring(initialDeckCard.length()-1),index);
                initialCard = cHand.substring(cHand.lastIndexOf(" ", index)+1, cHand.indexOf(" ", index));
                if (initialCard.indexOf("8")==-1){
@@ -120,7 +152,7 @@ public class CrazyEights2 {
                return cHand.replaceFirst(initialCard + " ", "").trim() + "-" + initialCard;
                 //finds if we can change the suit via and 8
                //this basically has to be true
-            } if (cHand.indexOf("8")!=-1){
+            } if (cHand.indexOf("8")>=0){
             suit = getHighSuit(cHand,"X");
             initialCard = cHand.substring(cHand.indexOf("8"),cHand.indexOf("8")+2);
             return cHand.replaceFirst(initialCard + " ", "").trim() + "-" + initialCard;
@@ -172,20 +204,6 @@ private static String getHighSuit(String hand, String bannedSuit){
 
 }
 
-private static String validHand(String playerHand, String initialDeckCard) {
-   if (playerHand.length()==0){
-      return "";
-   }
-   int addedCards = 0;
-   while(playerHand.indexOf(initialDeckCard.substring(0,initialDeckCard.length()-1))==-1 && playerHand.indexOf(initialDeckCard.substring(initialDeckCard.length()-1))==-1 && playerHand.indexOf("8")==-1){
-      playerHand+= " " + getCard();
-      addedCards++;
-      if (addedCards==5){
-         return playerHand + " ";
-      } 
-   }
-   return playerHand + " ";
-}
 
    private static String processPlayer(Scanner in, String playerHand, String initialDeckCard) {
       boolean validInput = false;
@@ -210,20 +228,51 @@ private static String validHand(String playerHand, String initialDeckCard) {
                initialDeckCard = cards;
                validInput = true; 
                System.out.println("Hand: " + playerHand);
-               //System.out.println("Deck " + initialDeckCard);
+               System.out.println("Deck " + initialDeckCard);
             }
 
          } else {
-            System.out.println("You cannot play. Press enter to draw a card.");
-            in.nextLine().toUpperCase();
-            playerHand = playerHand + getCard() + " ";
-            System.out.println("Hand: " + playerHand);
-            //System.out.println("Deck: " + initialDeckCard);
-         }
-      }
-      return playerHand + "-" + initialDeckCard;
+            int addedCards = 0; 
+            while(playerHand.indexOf(deckCardRank)==-1 && playerHand.indexOf(deckCardSuit)==-1 && playerHand.indexOf("8")==-1){
+               System.out.println("You cannot play. Press enter to draw a card.");
+               in.nextLine().toUpperCase();
+               playerHand+= " " + getCard();
+               System.out.println("Hand: " + playerHand);
+               System.out.println("Deck: " + initialDeckCard);
+               addedCards++;
+               if (addedCards==5){
+                  System.out.println("Turn Skipped. You can draw a max of 5 cards.");
+                  return playerHand + " ";
+               } 
+            }
+            
+            
+               }
+            }
+         
+            return playerHand + "-" + initialDeckCard;
 
-   }
+         }
+      
+
+         private static String validHand(String playerHand, String initialDeckCard) {
+            String initialDeckCardRank = initialDeckCard.substring(0,initialDeckCard.length()-1); 
+            String initialDeckCardSuit = initialDeckCard.substring(initialDeckCard.length()-1); 
+            if (playerHand.length()==0){
+               return "";
+            }
+            int addedCards = 0;
+            while(playerHand.indexOf(initialDeckCardRank)==-1 && playerHand.indexOf(initialDeckCardSuit)==-1 && playerHand.indexOf("8")==-1){
+               playerHand+= " " + getCard();
+               addedCards++;
+               if (addedCards==5){
+                  return playerHand + " ";
+               } 
+            }
+            return playerHand + " ";
+         }
+
+   
 
    private static boolean gameOver(int playerPoints, int c1Points, int c2Points) {
       return playerPoints >= 100 || c1Points >= 100 || c2Points >= 100;
@@ -234,25 +283,30 @@ private static String validHand(String playerHand, String initialDeckCard) {
       System.out.println("What suit is the 8?");
       String suit = in.nextLine().toUpperCase();
       if (suit.equals("DIAMONDS") || suit.equals("D")) {
-         initialDeckCard = initialDeckCard.replaceFirst(initialDeckCard.substring(0, initialDeckCard.length()), "8D");
-         System.out.println("Deck: " + initialDeckCard);
+         //initialDeckCard = initialDeckCard.replaceFirst(initialDeckCard.substring(0, initialDeckCard.length()), "8D");
+         initialDeckCard = "8D"; 
+         //System.out.println("Deck: " + initialDeckCard);
       } else if (suit.equals("SPADES") || suit.equals("S")) {
-         initialDeckCard = initialDeckCard.replaceFirst(initialDeckCard.substring(0, initialDeckCard.length()), "8S");
-         System.out.println("Deck: " + initialDeckCard);
+         //initialDeckCard = initialDeckCard.replaceFirst(initialDeckCard.substring(0, initialDeckCard.length()), "8S");
+         initialDeckCard = "8S"; 
+        // System.out.println("Deck: " + initialDeckCard);
 
       } else if (suit.equals("CLUBS") || suit.equals("C")) {
-         initialDeckCard = initialDeckCard.replaceFirst(initialDeckCard.substring(0, initialDeckCard.length()), "8C");
-         System.out.println("Deck: " + initialDeckCard);
+         //initialDeckCard = initialDeckCard.replaceFirst(initialDeckCard.substring(0, initialDeckCard.length()), "8C");
+         initialDeckCard = "8C"; 
+         //System.out.println("Deck: " + initialDeckCard);
 
       } else if (suit.equals("HEARTS") || suit.equals("H")) {
-         initialDeckCard = initialDeckCard.replaceFirst(initialDeckCard.substring(0, initialDeckCard.length()), "8H");
-         System.out.println("Deck: " + initialDeckCard);
+         //initialDeckCard = initialDeckCard.replaceFirst(initialDeckCard.substring(0, initialDeckCard.length()), "8H");
+         initialDeckCard = "8H"; 
+         //System.out.println("Deck: " + initialDeckCard);
 
       } else {
          System.out.println("Invalid input!");
       }
       playerHand = playerHand.replaceFirst(cards + " ", "");
       System.out.println("Hand: " + playerHand);
+      //System.out.println("Deck: " + initialDeckCard);
       return playerHand;
 
    }
@@ -293,42 +347,5 @@ private static String validHand(String playerHand, String initialDeckCard) {
       return card;
    }
 
-   private static int playerTotal(String playerCards) {
-      int p1Points = 0;
-
-      /**
-       * Cards 2 through 9 excluding 8 are worth their face value Ace are worth 1
-       * eights are worth 50 10 to kind worth 10
-       */
-
-      for (int i = 0; i < playerCards.length(); i++) {
-
-         if (playerCards.indexOf(ACE) >= 0) {
-            p1Points += 1;
-         } else if (playerCards.indexOf(KING) >= 0) {
-            p1Points += 10;
-         } else if (playerCards.indexOf(QUEEN) >= 0) {
-            p1Points += 10;
-         } else if (playerCards.indexOf(JACK) >= 0) {
-            p1Points += 10;
-         } else if (playerCards.indexOf(10) >= 0) {
-            p1Points += 10;
-         } else if (playerCards.indexOf("2") >= 0) {
-            p1Points += 2;
-         } else if (playerCards.indexOf("3") >= 0) {
-            p1Points += 3;
-         } else if (playerCards.indexOf("4") >= 0) {
-            p1Points += 4;
-         } else if (playerCards.indexOf("5") >= 0) {
-            p1Points += 5;
-         } else if (playerCards.indexOf("6") >= 0) {
-            p1Points += 6;
-         } else if (playerCards.indexOf("7") >= 0) {
-            p1Points += 7;
-         } else {
-            p1Points += 9;
-         }
-      }
-      return p1Points;
-   }
+  
 }
