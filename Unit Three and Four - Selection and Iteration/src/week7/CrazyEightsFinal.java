@@ -17,17 +17,25 @@ public class CrazyEightsFinal {
    private static final String VALID_CARDS = "AS2S3S4S5S6S7S8S9S10SJSQSKSAC2C3C4C5C6C7C8C9C10CJCQCKCAD2D3D4D5D6D7D8D9D10DJDQDKDAH2H3H4H5H6H7H8H9H10HJHQHKH";
 
    public static void main(String[] args) {
-      int playerPoints = 0, c1Points = 0, c2Points = 0;
+      int pointsPlayer = 0, pointsThisC = 0, pointsC2 = 0;
 
-      while (!gameOver(playerPoints, c1Points, c2Points)) {
+      while (!gameOver(pointsPlayer, pointsThisC, pointsC2)) {
          String result = playRound();
-         int firstSpace = result.indexOf(" ");
-         int secondSpace = result.lastIndexOf(" ");
-         playerPoints += Integer.parseInt(result.substring(0, firstSpace));
-         c1Points += Integer.parseInt(result.substring(firstSpace + 1, secondSpace));
-         c2Points += Integer.parseInt(result.substring(secondSpace + 1));
+         int firstDash = result.indexOf("-");
+         int secondDash = result.lastIndexOf("-");
+         pointsPlayer += Integer.parseInt(result.substring(0, firstDash));
+         pointsThisC += Integer.parseInt(result.substring(firstDash + 1, secondDash));
+         pointsC2 += Integer.parseInt(result.substring(secondDash + 1));
 
-         System.out.println(playerPoints + " " + c1Points + " " + c2Points);
+         System.out.println(pointsPlayer + " " + pointsThisC + " " + pointsC2);
+      }
+
+      if(Math.min(Math.min(pointsPlayer, pointsThisC), pointsC2) == pointsPlayer){
+         System.out.println("You are the winner");
+      }else if (Math.min(Math.min(pointsPlayer, pointsThisC), pointsC2) == pointsThisC){
+         System.out.println("Computer 1 won.");
+      }else if (Math.min(Math.min(pointsPlayer, pointsThisC), pointsC2) == pointsC2){
+         System.out.println("Computer 2 won."); 
       }
    }
 
@@ -51,13 +59,12 @@ public class CrazyEightsFinal {
       initialDeckCard = getCard();
       if (initialDeckCard.indexOf("8") >= 0) {
          initialDeckCard = getCard();
-         System.out.println("Deck:" + " " + initialDeckCard);
+         System.out.println("Deck: " + initialDeckCard);
       } else {
-         System.out.println("Deck:" + " " + initialDeckCard);
+         System.out.println("Deck: " + initialDeckCard);
       }
 
-      while (playerHand.length() >= 0 || computer2Hand.length() >= 0 || thisComputerHand.length() >= 0) {
-
+while (playerHand.length() >  0 && computer2Hand.length() > 0 && thisComputerHand.length() > 0) {
          temp = processPlayer(in, playerHand, initialDeckCard);
          playerHand = temp.substring(0, temp.indexOf("-"));
          initialDeckCard = temp.substring(temp.indexOf("-") + 1);
@@ -65,60 +72,95 @@ public class CrazyEightsFinal {
          temp = processComputer(thisComputerHand, initialDeckCard, playerHand, computer2Hand);
          thisComputerHand = temp.substring(0, temp.indexOf("-"));
          initialDeckCard = temp.substring(temp.indexOf("-") + 1);
-
+      
          temp = processComputer(computer2Hand, initialDeckCard, playerHand, thisComputerHand);
          computer2Hand = temp.substring(0, temp.indexOf("-"));
          initialDeckCard = temp.substring(temp.indexOf("-") + 1);
+         
       }
+   
       String points = playerTotal(playerHand) + "-" + playerTotal(thisComputerHand) + "-" + playerTotal(computer2Hand);
       return points;
-
-   }
+      
+   
+}
 
    private static int playerTotal(String playerHand) {
       int points = 0;
-      if (playerHand.indexOf(ACE) >= 0) {
-         points += 1;
+      for(int i = 0; i < playerHand.length(); i++){
+         String search = playerHand.substring(i, i+ 1); 
+
+         if (search.equals(ACE)) {
+            points += 1;
+         }else {
+            points += 0; 
+         }
+         if (search.equals("2")) {
+            points += 2;
+         }else {
+            points += 0; 
+         }
+         if (search.equals("3")) {
+            points += 3;
+         }else {
+            points += 0; 
+         }
+         if (search.equals("4")) {
+            points += 4;
+         }else {
+            points += 0; 
+         }
+         if (search.equals("5")) {
+            points += 5;
+         }else {
+            points += 0; 
+         }
+         if (search.equals("6")) {
+            points += 6;
+         }else {
+            points += 0; 
+         }
+         if (search.equals("7")) {
+            points += 7;
+         }else {
+            points += 0; 
+         }
+         if (search.equals("8")) {
+            points += 50;
+         }else {
+            points += 0; 
+         }
+         if (search.equals("9")) {
+            points += 9;
+         }else {
+            points += 0; 
+         }
+         if (search.equals("10")) {
+            points += 10;
+         }else {
+            points += 0; 
+         }
+         if (search.equals(JACK)) {
+            points += 10;
+         }else {
+            points += 0; 
+         }
+         if (search.equals(QUEEN)) {
+            points += 10;
+         }else {
+            points += 0; 
+         }
+         if (search.equals(KING)) {
+            points += 10;
+         }else {
+            points += 0; 
+         }
+
       }
-      if (playerHand.indexOf("2") >= 0) {
-         points += 2;
-      }
-      if (playerHand.indexOf("3") >= 0) {
-         points += 3;
-      }
-      if (playerHand.indexOf("4") >= 0) {
-         points += 4;
-      }
-      if (playerHand.indexOf("5") >= 0) {
-         points += 5;
-      }
-      if (playerHand.indexOf("6") >= 0) {
-         points += 6;
-      }
-      if (playerHand.indexOf("7") >= 0) {
-         points += 7;
-      }
-      if (playerHand.indexOf("8") >= 0) {
-         points += 50;
-      }
-      if (playerHand.indexOf("9") >= 0) {
-         points += 9;
-      }
-      if (playerHand.indexOf("10") >= 0) {
-         points += 10;
-      }
-      if (playerHand.indexOf(JACK) >= 0) {
-         points += 10;
-      }
-      if (playerHand.indexOf(QUEEN) >= 0) {
-         points += 10;
-      }
-      if (playerHand.indexOf(KING) >= 0) {
-         points += 10;
-      }
-      System.out.println(points);
       return points;
-   }
+      }
+
+      
 
    private static String processComputer(String thisComputerHand, String initialDeckCard, String playerHand,
          String computer2Hand) {
@@ -128,6 +170,42 @@ public class CrazyEightsFinal {
 
       while (!validInput) {
 
+         if(playerHand.indexOf(" ") < 0|| computer2Hand.indexOf(" ") < 0){
+            if (thisComputerHand.indexOf(deckCardRank) >= 0
+               && !(thisComputerHand.substring(thisComputerHand.indexOf(deckCardRank)).equals("8"))) {
+            if (deckCardRank.equals("10")) {
+               initialDeckCard = thisComputerHand.substring(thisComputerHand.indexOf(deckCardRank),
+                     thisComputerHand.indexOf(deckCardRank) + 3);
+               thisComputerHand = thisComputerHand.substring(0, thisComputerHand.indexOf(deckCardRank))
+                     + thisComputerHand.substring(thisComputerHand.indexOf(deckCardRank) + 3);
+               System.out.println("The opponents/computers played.");
+               System.out.println("New Deck: " + initialDeckCard);
+               //System.out.println("Computer Hand: " + thisComputerHand);
+            } else {
+               initialDeckCard = thisComputerHand.substring(thisComputerHand.indexOf(deckCardRank),
+                     thisComputerHand.indexOf(deckCardRank) + 2);
+               thisComputerHand = thisComputerHand.substring(0, thisComputerHand.indexOf(deckCardRank))
+                     + thisComputerHand.substring(thisComputerHand.indexOf(deckCardRank) + 2);
+               System.out.println("The opponent/computer played.");
+               System.out.println("New Deck: " + initialDeckCard);
+              // System.out.println("Computer Hand: " + thisComputerHand);
+            }
+            validInput = true;
+
+         } else if (thisComputerHand.indexOf("8") >= 0) {
+            String suit = getHighSuit(thisComputerHand, "X");
+            initialDeckCard = "8" + suit;
+            thisComputerHand = thisComputerHand.substring(0, thisComputerHand.indexOf("8"))
+                  + thisComputerHand.substring(thisComputerHand.indexOf("8") + 2);
+            System.out.println("The opponents/computers played.");
+            System.out.println("New Deck: " + initialDeckCard);
+            //System.out.println("Computer Hand: " + thisComputerHand);
+            validInput = true;
+
+
+         }
+      }
+
          if (thisComputerHand.indexOf(deckCardSuit) >= 0 && !(thisComputerHand.substring((thisComputerHand.indexOf(deckCardSuit) - 1),
                      (thisComputerHand.indexOf(deckCardSuit)))).equals("8")) {
             if (thisComputerHand
@@ -135,18 +213,18 @@ public class CrazyEightsFinal {
                   .equals("10")) {
                initialDeckCard = "10" + deckCardSuit;
                thisComputerHand = thisComputerHand.substring(0, thisComputerHand.indexOf(initialDeckCard))
-                     + thisComputerHand.substring(thisComputerHand.indexOf(deckCardSuit) + 1);
-               System.out.println("The opponents/computers played.");
+                     + thisComputerHand.substring(thisComputerHand.indexOf(deckCardSuit) + 2);
+               System.out.println("The opponent/computer played.");
                System.out.println("New Deck: " + initialDeckCard);
-               System.out.println("Computer Hand: " + thisComputerHand);
+               //System.out.println("Computer Hand: " + thisComputerHand);
             } else {
                initialDeckCard = thisComputerHand.substring(thisComputerHand.indexOf(deckCardSuit) - 1,
                      thisComputerHand.indexOf(deckCardSuit) + 1);
                thisComputerHand = thisComputerHand.substring(0, thisComputerHand.indexOf(initialDeckCard))
-                     + (thisComputerHand.substring(thisComputerHand.indexOf(deckCardSuit) + 1));
-               System.out.println("The opponents/computers played.");
+                     + (thisComputerHand.substring(thisComputerHand.indexOf(deckCardSuit) + 2));
+               System.out.println("The opponent/computer played.");
                System.out.println("New Deck: " + initialDeckCard);
-               System.out.println("Computer Hand: " + thisComputerHand);
+               //System.out.println("Computer Hand: " + thisComputerHand);
             }
 
             validInput = true;
@@ -155,20 +233,20 @@ public class CrazyEightsFinal {
                && !(thisComputerHand.substring(thisComputerHand.indexOf(deckCardRank)).equals("8"))) {
             if (deckCardRank.equals("10")) {
                initialDeckCard = thisComputerHand.substring(thisComputerHand.indexOf(deckCardRank),
-                     thisComputerHand.indexOf(deckCardRank) + 2 /*3??*/);
+                     thisComputerHand.indexOf(deckCardRank) + 3);
                thisComputerHand = thisComputerHand.substring(0, thisComputerHand.indexOf(deckCardRank))
-                     + thisComputerHand.substring(thisComputerHand.indexOf(deckCardRank) + 2 /*3??*/);
-               System.out.println("The opponents/computers played.");
+                     + thisComputerHand.substring(thisComputerHand.indexOf(deckCardRank) + 2);
+               System.out.println("The opponent/computer played.");
                System.out.println("New Deck: " + initialDeckCard);
-               System.out.println("Computer Hand: " + thisComputerHand);
+               //System.out.println("Computer Hand: " + thisComputerHand);
             } else {
                initialDeckCard = thisComputerHand.substring(thisComputerHand.indexOf(deckCardRank),
-                     thisComputerHand.indexOf(deckCardRank) + 2 /*1?*/);
+                     thisComputerHand.indexOf(deckCardRank) + 2);
                thisComputerHand = thisComputerHand.substring(0, thisComputerHand.indexOf(deckCardRank))
-                     + thisComputerHand.substring(thisComputerHand.indexOf(deckCardRank) + 2 /*1??*/);
-               System.out.println("The opponents/computers played.");
+                     + thisComputerHand.substring(thisComputerHand.indexOf(deckCardRank) + 2);
+               System.out.println("The opponent/computer played.");
                System.out.println("New Deck: " + initialDeckCard);
-               System.out.println("Computer Hand: " + thisComputerHand);
+               //System.out.println("Computer Hand: " + thisComputerHand);
             }
             validInput = true;
 
@@ -176,15 +254,15 @@ public class CrazyEightsFinal {
             String suit = getHighSuit(thisComputerHand, "X");
             initialDeckCard = "8" + suit;
             thisComputerHand = thisComputerHand.substring(0, thisComputerHand.indexOf("8"))
-                  + thisComputerHand.substring(thisComputerHand.indexOf("8") + 1);
+                  + thisComputerHand.substring(thisComputerHand.indexOf("8") + 3);
             System.out.println("The opponents/computers played.");
             System.out.println("New Deck: " + initialDeckCard);
-            // System.out.println("Computer Hand: " + thisComputerHand);
+            //System.out.println("Computer Hand: " + thisComputerHand);
             validInput = true;
 
          } else {
-            if (thisComputerHand.indexOf(deckCardSuit) == -1 && thisComputerHand.indexOf(deckCardRank) == -1
-                  && playerHand.indexOf("8") == -1) {
+            if (thisComputerHand.indexOf(deckCardSuit) < 0 && thisComputerHand.indexOf(deckCardRank) < 0
+                  && playerHand.indexOf("8") < 0) {
                System.out.println("The computer skipped it's turn");
                validInput = true; 
             }
@@ -248,6 +326,8 @@ public class CrazyEightsFinal {
                System.out.println("Not a valid card: " + cards);
             } else if (playerHand.indexOf(playedCardSuit) < 0 || playerHand.indexOf(playedCardRank) < 0) {
                System.out.println("You don't have a " + cards);
+            } else if (initialDeckCard.indexOf(playedCardSuit) < 0 && initialDeckCard.indexOf(playedCardRank) < 0 && playedCardRank != "8"){
+               System.out.println("You cannot play that card.");
             } else if (cards.indexOf("8") >= 0) {
                ifEight(in, initialDeckCard, playerHand, cards);
                validInput = true; 
@@ -269,12 +349,14 @@ public class CrazyEightsFinal {
                System.out.println("Hand: " + playerHand);
                System.out.println("Deck: " + initialDeckCard);
                addedCards++;
+               validInput = false; 
                if (addedCards == 5) {
                   System.out.println("Turn Skipped. You can draw a max of 5 cards.");
+                  validInput = true; 
                   return playerHand + " ";
                }
             }
-            validInput = false; 
+        
          }
       }
 
@@ -291,24 +373,27 @@ public class CrazyEightsFinal {
       System.out.println("What suit is the 8?");
       String suit = in.nextLine().toUpperCase();
       if (suit.equals("DIAMONDS") || suit.equals("D")) {
+         playerHand = playerHand.replaceFirst(cards + " ", "");
          initialDeckCard = initialDeckCard.replaceFirst(initialDeckCard.substring(0, initialDeckCard.length()), "8D");
          System.out.println("Deck: " + initialDeckCard);
       } else if (suit.equals("SPADES") || suit.equals("S")) {
+         playerHand = playerHand.replaceFirst(cards + " ", "");
          initialDeckCard = initialDeckCard.replaceFirst(initialDeckCard.substring(0, initialDeckCard.length()), "8S");
          System.out.println("Deck: " + initialDeckCard);
 
       } else if (suit.equals("CLUBS") || suit.equals("C")) {
+         playerHand = playerHand.replaceFirst(cards + " ", "");
          initialDeckCard = initialDeckCard.replaceFirst(initialDeckCard.substring(0, initialDeckCard.length()), "8C");
          System.out.println("Deck: " + initialDeckCard);
 
       } else if (suit.equals("HEARTS") || suit.equals("H")) {
+         playerHand = playerHand.replaceFirst(cards + " ", "");
          initialDeckCard = initialDeckCard.replaceFirst(initialDeckCard.substring(0, initialDeckCard.length()), "8H");
          System.out.println("Deck: " + initialDeckCard);
 
       } else {
          System.out.println("Invalid input!");
       }
-      playerHand = playerHand.replaceFirst(cards + " ", "");
       System.out.println("Hand: " + playerHand);
       return playerHand;
 
