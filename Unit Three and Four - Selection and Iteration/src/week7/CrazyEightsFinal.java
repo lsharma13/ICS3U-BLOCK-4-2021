@@ -1,6 +1,6 @@
 package week7;
 
-import java.util.Scanner;
+import java.util.Scanner; 
 
 public class CrazyEightsFinal {
    private static final double NUM_SUITS = 4;
@@ -29,6 +29,7 @@ public class CrazyEightsFinal {
 
          System.out.println(pointsPlayer + " " + pointsThisC + " " + pointsC2);
       }
+      //This collects the number of points each player (or computer) has received and continues to add up the points until someone has reached 100 points. 
 
       if(Math.min(Math.min(pointsPlayer, pointsThisC), pointsC2) == pointsPlayer){
          System.out.println("You are the winner");
@@ -37,6 +38,7 @@ public class CrazyEightsFinal {
       }else if (Math.min(Math.min(pointsPlayer, pointsThisC), pointsC2) == pointsC2){
          System.out.println("Computer 2 won."); 
       }
+      //This checks to see who had the lowest number of points and prints out who won. 
    }
 
    private static String playRound() {
@@ -54,6 +56,10 @@ public class CrazyEightsFinal {
          thisComputerHand += getCard() + " ";
          computer2Hand += getCard() + " ";
       }
+      String thisComputerHandHidden = "XX XX XX XX XX"; 
+      String computer2HandHidden = "XX XX XX XX XX"; 
+      System.out.println("Computer 1:" + thisComputerHandHidden);
+      System.out.println("Computer 2: " + computer2HandHidden);
       System.out.println("Hand:" + " " + playerHand);
 
       initialDeckCard = getCard();
@@ -63,25 +69,38 @@ public class CrazyEightsFinal {
       } else {
          System.out.println("Deck: " + initialDeckCard);
       }
+      /**
+       * This gives each player (or computer) 5 cards, and prints out the hidden computer cards 
+       * and the player's cards, for the player to see. 
+       * It also prints out the deck top card and makes sure that it is not an 8, if it is, it gets a 
+       * new top card 
+      **/
 
 while (playerHand.length() >  0 && computer2Hand.length() > 0 && thisComputerHand.length() > 0) {
          temp = processPlayer(in, playerHand, initialDeckCard);
          playerHand = temp.substring(0, temp.indexOf("-"));
          initialDeckCard = temp.substring(temp.indexOf("-") + 1);
 
-         temp = processComputer(thisComputerHand, initialDeckCard, playerHand, computer2Hand);
-         thisComputerHand = temp.substring(0, temp.indexOf("-"));
-         initialDeckCard = temp.substring(temp.indexOf("-") + 1);
+         temp = processComputer(thisComputerHand, initialDeckCard, playerHand, computer2Hand, computer2HandHidden);
+         thisComputerHand = temp.substring(0, temp.indexOf("-")); 
+         initialDeckCard = temp.substring(temp.indexOf("-") + 1, temp.lastIndexOf("-"));
+         thisComputerHandHidden = temp.substring(temp.lastIndexOf("-") + 1); 
+
       
-         temp = processComputer(computer2Hand, initialDeckCard, playerHand, thisComputerHand);
+         temp = processComputer(computer2Hand, initialDeckCard, playerHand, thisComputerHand, computer2HandHidden);
          computer2Hand = temp.substring(0, temp.indexOf("-"));
-         initialDeckCard = temp.substring(temp.indexOf("-") + 1);
+         initialDeckCard = temp.substring(temp.indexOf("-") + 1, temp.lastIndexOf("-"));
+         computer2HandHidden = temp.substring(temp.lastIndexOf("-") + 1); 
          
       }
    
       String points = playerTotal(playerHand) + "-" + playerTotal(thisComputerHand) + "-" + playerTotal(computer2Hand);
       return points;
       
+   /**
+    * This continues to play the computers and the player as long as everybody has a card
+    * It also returns the number of points so that the code in the main works. 
+    */
    
 }
 
@@ -159,11 +178,13 @@ while (playerHand.length() >  0 && computer2Hand.length() > 0 && thisComputerHan
       }
       return points;
       }
-
+      /**
+       * This tallies the number of points each player (or computer) has
+       */
       
 
    private static String processComputer(String thisComputerHand, String initialDeckCard, String playerHand,
-         String computer2Hand) {
+         String computer2Hand, String thisComputerHandHidden) {
       boolean validInput = false;
       String deckCardSuit = initialDeckCard.substring(initialDeckCard.length() - 1);
       String deckCardRank = initialDeckCard.substring(0, initialDeckCard.length() - 1);
@@ -178,7 +199,9 @@ while (playerHand.length() >  0 && computer2Hand.length() > 0 && thisComputerHan
                      thisComputerHand.indexOf(deckCardRank) + 3);
                thisComputerHand = thisComputerHand.substring(0, thisComputerHand.indexOf(deckCardRank))
                      + thisComputerHand.substring(thisComputerHand.indexOf(deckCardRank) + 3);
+               thisComputerHandHidden = thisComputerHandHidden.replaceFirst("XX ", "");
                System.out.println("The opponents/computers played.");
+               System.out.println("Computer Hand: " + thisComputerHandHidden);
                System.out.println("New Deck: " + initialDeckCard);
                //System.out.println("Computer Hand: " + thisComputerHand);
             } else {
@@ -186,7 +209,9 @@ while (playerHand.length() >  0 && computer2Hand.length() > 0 && thisComputerHan
                      thisComputerHand.indexOf(deckCardRank) + 2);
                thisComputerHand = thisComputerHand.substring(0, thisComputerHand.indexOf(deckCardRank))
                      + thisComputerHand.substring(thisComputerHand.indexOf(deckCardRank) + 2);
+            thisComputerHandHidden = thisComputerHandHidden.replaceFirst("XX ", ""); 
                System.out.println("The opponent/computer played.");
+               System.out.println("Computer Hand: " + thisComputerHandHidden);
                System.out.println("New Deck: " + initialDeckCard);
               // System.out.println("Computer Hand: " + thisComputerHand);
             }
@@ -197,7 +222,9 @@ while (playerHand.length() >  0 && computer2Hand.length() > 0 && thisComputerHan
             initialDeckCard = "8" + suit;
             thisComputerHand = thisComputerHand.substring(0, thisComputerHand.indexOf("8"))
                   + thisComputerHand.substring(thisComputerHand.indexOf("8") + 2);
+            thisComputerHandHidden = thisComputerHandHidden.replaceFirst("XX ", ""); 
             System.out.println("The opponents/computers played.");
+            System.out.println("Computer Hand: " + thisComputerHandHidden);
             System.out.println("New Deck: " + initialDeckCard);
             //System.out.println("Computer Hand: " + thisComputerHand);
             validInput = true;
@@ -205,29 +232,39 @@ while (playerHand.length() >  0 && computer2Hand.length() > 0 && thisComputerHan
 
          }
       }
+      /**
+       * This ensures that rule #4 of how the computer plays works. It ensures that if any player has 1 card 
+       * left, the computer can change the suit of the stock pile by either using rule #3 or #4. 
+       */
 
-         if (thisComputerHand.indexOf(deckCardSuit) >= 0 && !(thisComputerHand.substring((thisComputerHand.indexOf(deckCardSuit) - 1),
-                     (thisComputerHand.indexOf(deckCardSuit)))).equals("8")) {
-            if (thisComputerHand
-                  .substring((thisComputerHand.indexOf(deckCardSuit) - 1), (thisComputerHand.indexOf(deckCardSuit)))
-                  .equals("10")) {
+         if (thisComputerHand.indexOf(deckCardSuit) >= 0 && !(thisComputerHand.substring((thisComputerHand.indexOf(deckCardSuit) - 1), (thisComputerHand.indexOf(deckCardSuit)))).equals("8")) {
+            int indexOfSuit = thisComputerHand.indexOf(deckCardSuit); 
+            if (thisComputerHand.substring(indexOfSuit- 1, indexOfSuit).equals("0")) {
                initialDeckCard = "10" + deckCardSuit;
                thisComputerHand = thisComputerHand.substring(0, thisComputerHand.indexOf(initialDeckCard))
                      + thisComputerHand.substring(thisComputerHand.indexOf(deckCardSuit) + 2);
                System.out.println("The opponent/computer played.");
+               thisComputerHandHidden = thisComputerHandHidden.replaceFirst("XX ", ""); 
+               System.out.println("Computer Hand: " + thisComputerHandHidden);
                System.out.println("New Deck: " + initialDeckCard);
                //System.out.println("Computer Hand: " + thisComputerHand);
             } else {
-               initialDeckCard = thisComputerHand.substring(thisComputerHand.indexOf(deckCardSuit) - 1,
-                     thisComputerHand.indexOf(deckCardSuit) + 1);
+               initialDeckCard = thisComputerHand.substring(thisComputerHand.indexOf(deckCardSuit) - 1, thisComputerHand.indexOf(deckCardSuit) + 1);
                thisComputerHand = thisComputerHand.substring(0, thisComputerHand.indexOf(initialDeckCard))
                      + (thisComputerHand.substring(thisComputerHand.indexOf(deckCardSuit) + 2));
                System.out.println("The opponent/computer played.");
+               thisComputerHandHidden = thisComputerHandHidden.replaceFirst("XX ", ""); 
+               System.out.println("Computer Hand: " + thisComputerHandHidden);
                System.out.println("New Deck: " + initialDeckCard);
                //System.out.println("Computer Hand: " + thisComputerHand);
             }
 
             validInput = true;
+            /**
+             * This ensures that rule #1 of how the computer plays happens. If the computer has a card
+             * that is the same suit as the deck card, and it is not an 8, it will play it. 
+             * That is what this code does 
+             */
 
          } else if (thisComputerHand.indexOf(deckCardRank) >= 0
                && !(thisComputerHand.substring(thisComputerHand.indexOf(deckCardRank)).equals("8"))) {
@@ -237,6 +274,8 @@ while (playerHand.length() >  0 && computer2Hand.length() > 0 && thisComputerHan
                thisComputerHand = thisComputerHand.substring(0, thisComputerHand.indexOf(deckCardRank))
                      + thisComputerHand.substring(thisComputerHand.indexOf(deckCardRank) + 2);
                System.out.println("The opponent/computer played.");
+               thisComputerHandHidden = thisComputerHandHidden.replaceFirst("XX ", ""); 
+               System.out.println("Computer Hand: " + thisComputerHandHidden);
                System.out.println("New Deck: " + initialDeckCard);
                //System.out.println("Computer Hand: " + thisComputerHand);
             } else {
@@ -245,10 +284,18 @@ while (playerHand.length() >  0 && computer2Hand.length() > 0 && thisComputerHan
                thisComputerHand = thisComputerHand.substring(0, thisComputerHand.indexOf(deckCardRank))
                      + thisComputerHand.substring(thisComputerHand.indexOf(deckCardRank) + 2);
                System.out.println("The opponent/computer played.");
+               thisComputerHandHidden = thisComputerHandHidden.replaceFirst("XX ", ""); 
+               System.out.println("Computer Hand: " + thisComputerHandHidden);
                System.out.println("New Deck: " + initialDeckCard);
                //System.out.println("Computer Hand: " + thisComputerHand);
             }
             validInput = true;
+            /**
+             * This makes sure rule #2 on how the computer plays works. If it does not have a card the same
+             * suit as the deck card but it has one that is the same rank and it is not an eight, it will 
+             * play it. 
+             * That is what this code performs. 
+             */
 
          } else if (thisComputerHand.indexOf("8") >= 0) {
             String suit = getHighSuit(thisComputerHand, "X");
@@ -256,9 +303,17 @@ while (playerHand.length() >  0 && computer2Hand.length() > 0 && thisComputerHan
             thisComputerHand = thisComputerHand.substring(0, thisComputerHand.indexOf("8"))
                   + thisComputerHand.substring(thisComputerHand.indexOf("8") + 3);
             System.out.println("The opponents/computers played.");
+            thisComputerHandHidden = thisComputerHandHidden.replaceFirst("XX ", ""); 
+               System.out.println("Computer Hand: " + thisComputerHandHidden);
             System.out.println("New Deck: " + initialDeckCard);
             //System.out.println("Computer Hand: " + thisComputerHand);
             validInput = true;
+            
+            /**
+             * This completes rule #3 of how the computer plays. If no other rule works, it will play 
+             * an 8 and pick a suit in it's deck. It will also call on the getHighSuit method below and 
+             * find the most repeated suit in the computers hand. 
+             */
 
          } else {
             if (thisComputerHand.indexOf(deckCardSuit) < 0 && thisComputerHand.indexOf(deckCardRank) < 0
@@ -268,9 +323,13 @@ while (playerHand.length() >  0 && computer2Hand.length() > 0 && thisComputerHan
             }
          }
       }
-      return thisComputerHand + "-" + initialDeckCard;
+      return thisComputerHand + "-" + initialDeckCard + "-" + thisComputerHandHidden;
 
    }
+   /**
+    * If nothing else works, the computer will skip its turn and the entire method will return the computer
+    * hand-initialDeckCard-hiddenHand
+    */
 
    private static String getHighSuit(String hand, String bannedSuit) {
 
@@ -310,6 +369,10 @@ while (playerHand.length() >  0 && computer2Hand.length() > 0 && thisComputerHan
 
       return null;
    }
+   /**
+    * This finds the most repeated suit in the computers hand, so the computer changes the suit of the
+    * 8 into something that will allow them to play the most. 
+    */
 
    private static String processPlayer(Scanner in, String playerHand, String initialDeckCard) {
       boolean validInput = false;
@@ -324,9 +387,9 @@ while (playerHand.length() >  0 && computer2Hand.length() > 0 && thisComputerHan
             String playedCardRank = cards.substring(0, cards.length() - 1);
             if (VALID_CARDS.indexOf(cards) < 0) {
                System.out.println("Not a valid card: " + cards);
-            } else if (playerHand.indexOf(playedCardSuit) < 0 || playerHand.indexOf(playedCardRank) < 0) {
+            } else if (playerHand.indexOf(playedCardSuit) < 0 && playerHand.indexOf(playedCardRank) < 0) {
                System.out.println("You don't have a " + cards);
-            } else if (initialDeckCard.indexOf(playedCardSuit) < 0 && initialDeckCard.indexOf(playedCardRank) < 0 && playedCardRank != "8"){
+            } else if (initialDeckCard.indexOf(playedCardSuit) < 0 && initialDeckCard.indexOf(playedCardRank) < 0 && !playedCardRank.equals("8")){
                System.out.println("You cannot play that card.");
             } else if (cards.indexOf("8") >= 0) {
                ifEight(in, initialDeckCard, playerHand, cards);
@@ -338,6 +401,12 @@ while (playerHand.length() >  0 && computer2Hand.length() > 0 && thisComputerHan
                System.out.println("Hand: " + playerHand);
                System.out.println("Deck " + initialDeckCard);
             }
+            /**
+             * This prompts the player for the card they would like to play, makes sure it is a valid card
+             * makes sure they have it, and makes sure that they can play the card. 
+             * It also calls the ifEight method so that it can prompt the user further, if they play an 8. 
+             * Finally, it changes the playerHand (takes away the card they played) and updates the deckCard
+             */
 
          } else {
             int addedCards = 0;
@@ -353,7 +422,7 @@ while (playerHand.length() >  0 && computer2Hand.length() > 0 && thisComputerHan
                if (addedCards == 5) {
                   System.out.println("Turn Skipped. You can draw a max of 5 cards.");
                   validInput = true; 
-                  return playerHand + " ";
+                  return playerHand + "-" + initialDeckCard; 
                }
             }
         
@@ -363,11 +432,20 @@ while (playerHand.length() >  0 && computer2Hand.length() > 0 && thisComputerHan
       return playerHand + "-" + initialDeckCard;
 
    }
+   /**
+    * This is what happens if the player cannot play, it will have a max of 5 draws and then will no longer 
+    * be able to play. 
+    * The method then returns the playerHand-initialDeckCard for use above. 
+    */
 
    private static boolean gameOver(int playerPoints, int c1Points, int c2Points) {
       return playerPoints >= 100 || c1Points >= 100 || c2Points >= 100;
 
    }
+   /**
+    * This is the method that is called on to make sure the game is not over. If there is someone with 
+    * 100 points, then the game is over. 
+    */
 
    private static String ifEight(Scanner in, String initialDeckCard, String playerHand, String cards) {
       System.out.println("What suit is the 8?");
@@ -398,6 +476,11 @@ while (playerHand.length() >  0 && computer2Hand.length() > 0 && thisComputerHan
       return playerHand;
 
    }
+   /**
+    * This is the method called on if the player plays and eight. 
+    * It prompts the player for which suit they would like it to be, ensures that it is a valid input, and 
+    * replaces the card in the deck and in the player's Hand
+    */
 
    private static String getSuit() {
       int suit = (int) (Math.random() * NUM_SUITS);
@@ -412,6 +495,9 @@ while (playerHand.length() >  0 && computer2Hand.length() > 0 && thisComputerHan
          return SPADES;
 
    }
+   /**
+    * This gets the suit of the card
+    */
 
    private static String getFace() {
 
@@ -428,10 +514,17 @@ while (playerHand.length() >  0 && computer2Hand.length() > 0 && thisComputerHan
          return KING;
 
    }
+   /**
+    * This gets the face of the card. 
+    */
 
    private static String getCard() {
       String card = getFace() + getSuit();
       return card;
    }
+   
+   /**
+    * This gets the card (face and suit put together). 
+    */
 
 }
