@@ -1,5 +1,9 @@
 package week8; 
 
+/**
+ * private - belongs to the class
+ */
+
 public class Die {
            
     //attributes define the state of an instance of the class at any particular time 
@@ -8,7 +12,8 @@ public class Die {
 
   /**constructor 
     Has the same name as the class
-    Initializes the state of the class (attributes)
+    Initializes the state of the class (attributes) - sets the attributes to what they should be at the 
+    beginning
     returns the object (although we do not say return)
     */
  

@@ -110,56 +110,58 @@ public class CrazyEights2 {
    System.out.println(points);
    return points;
 }
-   private static String processComputer(String cHand, String initialDeckCard, String opp1Hand, String opp2Hand) {
-         cHand = validHand(cHand,initialDeckCard) + " ";
+   private static String processComputer(String thisComputerHand, String initialDeckCard, String opp1Hand, String opp2Hand) {
+      /*opp1Hand or opp2Hand might be playerHand
+      variables are opposition of the computer */
+      thisComputerHand = validHand(thisComputerHand,initialDeckCard) + " ";
          int index = 0;
          String initialCard = "";
          String suit = "";
          String initialDeckCardRank= initialDeckCard.substring(0,initialDeckCard.length()-1);
          String initialDeckCardSuit = initialDeckCard.substring(initialDeckCard.length()-1);
    
-         if (cHand.indexOf(initialDeckCardRank)>=0 || cHand.indexOf(initialDeckCardSuit)>=0 || cHand.indexOf("8")>=0){
+         if (thisComputerHand.indexOf(initialDeckCardRank)>=0 || thisComputerHand.indexOf(initialDeckCardSuit)>=0 || thisComputerHand.indexOf("8")>=0){
             if (opp1Hand.indexOf(" ") < 0|| opp2Hand.indexOf(" ") < 0){
-            while (cHand.indexOf(initialDeckCardRank,index) >= 0){
-                  index = cHand.indexOf(initialDeckCardRank,index);
-                  initialCard = cHand.substring(index, cHand.indexOf(" ", index));
+            while (thisComputerHand.indexOf(initialDeckCardRank,index) >= 0){
+                  index = thisComputerHand.indexOf(initialDeckCardRank,index);
+                  initialCard = thisComputerHand.substring(index, thisComputerHand.indexOf(" ", index));
                   if (!(initialCard.substring(initialCard.length()-1).equals(initialDeckCardSuit))){
-                     return cHand.replaceFirst(initialCard + " ", "").trim() + "-" + initialCard;
+                     return thisComputerHand.replaceFirst(initialCard + " ", "").trim() + "-" + initialCard;
                   }
                   index++;
                   //finds if we can change the suit via and 8
-               } if (cHand.indexOf("8")>=0){
-                  suit = getHighSuit(cHand, initialDeckCardRank);
-                  return cHand.replaceFirst(cHand.substring(cHand.indexOf("8"), cHand.indexOf("8")+2), "").trim() + "-8"+suit;
+               } if (thisComputerHand.indexOf("8")>=0){
+                  suit = getHighSuit(thisComputerHand, initialDeckCardRank);
+                  return thisComputerHand.replaceFirst(thisComputerHand.substring(thisComputerHand.indexOf("8"), thisComputerHand.indexOf("8")+2), "").trim() + "-8"+suit;
                }
             //finds a card with the same suit 
-           }if (cHand.indexOf(initialDeckCardSuit) >= 0){
+           }if (thisComputerHand.indexOf(initialDeckCardSuit) >= 0){
             index = 0;
-            while (cHand.indexOf(initialDeckCardSuit, index)>= 0){
-               index = cHand.indexOf(initialDeckCard.substring(initialDeckCard.length()-1),index);
-               initialCard = cHand.substring(cHand.lastIndexOf(" ", index)+1, cHand.indexOf(" ", index));
+            while (thisComputerHand.indexOf(initialDeckCardSuit, index)>= 0){
+               index = thisComputerHand.indexOf(initialDeckCardSuit,index);
+               initialCard = thisComputerHand.substring(thisComputerHand.lastIndexOf(" ", index)+1, thisComputerHand.indexOf(" ", index));
                if (initialCard.indexOf("8")==-1){
-               return cHand.replaceFirst(initialCard + " ", "").trim() + "-" + initialCard;
+               return thisComputerHand.replaceFirst(initialCard + " ", "").trim() + "-" + initialCard;
                } else{
                   index++;
                }
             }
             //finds a card with the same rank (this does not yet handel if the card is an 8)
-            } if (cHand.indexOf(initialDeckCardRank)!=-1  && cHand.indexOf("8")==-1){
+            } if (thisComputerHand.indexOf(initialDeckCardRank)!=-1  && thisComputerHand.indexOf("8")==-1){
                index = 0; 
-               index = cHand.indexOf((initialDeckCardRank),index);
-               initialCard = cHand.substring(index, cHand.indexOf(" ", index));
-               return cHand.replaceFirst(initialCard + " ", "").trim() + "-" + initialCard;
+               index = thisComputerHand.indexOf((initialDeckCardRank),index);
+               initialCard = thisComputerHand.substring(index, thisComputerHand.indexOf(" ", index));
+               return thisComputerHand.replaceFirst(initialCard + " ", "").trim() + "-" + initialCard;
                 //finds if we can change the suit via and 8
                //this basically has to be true
-            } if (cHand.indexOf("8")>=0){
-            suit = getHighSuit(cHand,"X");
-            initialCard = cHand.substring(cHand.indexOf("8"),cHand.indexOf("8")+2);
-            return cHand.replaceFirst(initialCard + " ", "").trim() + "-" + initialCard;
+            } if (thisComputerHand.indexOf("8")>=0){
+            suit = getHighSuit(thisComputerHand,"X");
+            initialCard = thisComputerHand.substring(thisComputerHand.indexOf("8"),thisComputerHand.indexOf("8")+2);
+            return thisComputerHand.replaceFirst(initialCard + " ", "").trim() + "-" + initialCard;
             } 
             }else{
             System.out.println("The computer skipped it's turn");
-            return cHand + "-" + initialDeckCard;
+            return thisComputerHand + "-" + initialDeckCard;
 }
 
    return ""; // change this
