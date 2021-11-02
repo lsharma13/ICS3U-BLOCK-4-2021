@@ -16,14 +16,22 @@ public class Rectangle {
         width = side; 
     }
 
+
+    public int getLength(){
+        return length; 
+    }
+
+    public int getWidth(){
+        return width; 
+    }
+
     public int getArea() {
-        return length * width; 
+        return getLength() * getWidth(); 
     }
 
     public int getPerimeter() { 
-        return (2 * (length + width)); 
+        return (2 * (getLength() + getWidth())); 
     }
-
     public boolean isSquare() {
         return length == width; 
     }
