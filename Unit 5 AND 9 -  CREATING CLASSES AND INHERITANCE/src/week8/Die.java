@@ -40,7 +40,6 @@ public class Die {
     /**
     * accessor methods
     - accesses a method 
-    * @return
     */
 
   

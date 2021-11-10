@@ -14,7 +14,7 @@ public class Rectangle {
     public Rectangle(int side) {
         length = side; 
         width = side; 
-    }
+    } 
 
 
     public int getLength(){

@@ -30,6 +30,7 @@ public class Box extends Rectangle { //everything extends object, even if you do
            * you have to call your parent's constructor in your constructor or java will call the 
            * parent's no argument constructor, since the parent does not have a no argument constructor
            * it does not work.
+           * if the parent does not have a constructor, java makes one, that does nothing
            */
 
            /**
@@ -49,6 +50,49 @@ public class Box extends Rectangle { //everything extends object, even if you do
          super(side); 
          height = side; 
      }
+
+     public int getArea(){
+         //super.getArea();    //this will call the parent's method not constructor 
+        return 2 * super.getArea() + 2 * getWidth() * height + 2 * getLength() * height;
+        /**
+         * if you have your own method, it will use it's own, this is where you need to use super. if you 
+         * want the parent's function
+         * if you don't have your own method (like getWidth and getLength), you don't need to use
+         * super. 
+         */
+        }
+
+     public int getPerimeter(){
+         return 2 * super.getPerimeter() + 4 * height; 
+         /**
+          * using super.getPerimeter allows you to call the parent class's getPerimeter
+          * if you just use getPerimeter, you are just calling yourself over again
+          */
+     }
+
+     public boolean equals(Object obj){
+
+        if (super.equals(obj))  {
+            if (obj instanceof Box){
+                return height == ((Box)obj).height; 
+            }
+        }
+        return false; 
+
+        /**if (obj == this)
+            return true; 
+        
+            if (obj instanceof Box) {
+                Box b = (Box) obj; 
+                return getLength() == b.getLength() && getWidth() == b.getWidth(); 
+            }else {
+                return false; 
+            }
+
+    }
+    */
+
+}
    
     }
 
