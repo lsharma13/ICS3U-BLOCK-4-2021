@@ -15,11 +15,11 @@ public class ArrayExamples {
         // most likely will not use this; but in mc questions
         mystery(arr); 
 
-        int numOddd = numOdd(arr); 
+       numOdd(arr); 
 
-        String[] names = { "Kayhan", "Lara", "Muriel"}; 
-        String[] names2 = { "Kaiyan", "Eva", "Sylvia", "Muriel", "Lara"}; 
-        String[] matchingNames = mystery(names, names2); 
+        String[] names = { "Eva", "Lara", "Muriel"}; 
+        String[] names2 = { "James", "Eva", "Sylvia", "Muriel", "Lara"}; 
+        mystery(names, names2); 
     }
 
     private static String[] mystery(String[] names, String[] names2) {
