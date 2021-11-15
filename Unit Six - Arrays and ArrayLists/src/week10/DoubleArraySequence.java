@@ -83,11 +83,17 @@ public class DoubleArraySequence {
     * 
     * @param src an existing sequence
     * @precondition src is not null.
-    * @post condition This sequence is a copy of the sequence src.
+    * @post-condition This sequence is a copy of the sequence src.
     **/
    // The new double array sequence is a copy of the DoubleArraySequence src.
    public DoubleArraySequence(DoubleArraySequence src) {
-
+      data = new double[src.data.length]; 
+      manyItems = src.manyItems; 
+      currentIndex = src.currentIndex; 
+      
+      for(int i = 0; i < data.length; i++){
+         data[i] = src.data[i]; 
+      }
    }
 
    /**
@@ -96,7 +102,7 @@ public class DoubleArraySequence {
     * capacity is increased before adding the new element.
     * 
     * @param d the new element that is being added
-    * @post condition A new copy of the element has been added to this sequence. If
+    * @post-condition A new copy of the element has been added to this sequence. If
     *                there was a current element, then the new element is placed
     *                after the current element. If there was no current element,
     *                then the new element is placed at the end of the sequence. In
@@ -108,8 +114,35 @@ public class DoubleArraySequence {
     *       the sequence to fail with an arithmetic overflow.
     **/
    public void addAfter(double d) {
-
+     if(manyItems < data.length){ 
+      if(isCurrent()){
+         for(int i = manyItems; i > currentIndex + 1; i--){
+            data[i] = data[i-1]; 
+         }
+         data[currentIndex + 1] = d; 
+         currentIndex++; 
+         manyItems++; 
+      }else if(!isCurrent()){
+         data[manyItems] = d; 
+         currentIndex = manyItems; 
+         manyItems++; 
+      }else{
+         ensureCapacity(manyItems + 1);
+      
+      }
+     
+   }else{  
+      int max = DEFAULT_CAPACITY - manyItems; 
+      ensureCapacity(manyItems + max);
+		data[currentIndex+1] = d;
+		manyItems++;
+      currentIndex++; 
    }
+
+}
+   
+
+
 
    /**
     * Add a new element to this sequence, before the current element. If the new
@@ -129,6 +162,36 @@ public class DoubleArraySequence {
     *       the sequence to fail with an arithmetic overflow.
     **/
    public void addBefore(double element) {
+      if(manyItems < data.length){ 
+         if(isCurrent()){
+            for(int i = manyItems; i > currentIndex; i--){
+               data[i] = data[i-1]; 
+            }
+            data[currentIndex] = element; 
+            manyItems++; 
+         }else if(!isCurrent()){
+            for(int i = manyItems; i > 0; i--){
+               data[i] = data[i-1]; 
+            }
+            data[0] = element; 
+            currentIndex = 0; 
+            manyItems++; 
+         }else{
+            ensureCapacity(manyItems + 1);
+         
+         }
+        
+      }else{  
+        for(int i = manyItems; i > currentIndex; i--){
+         ensureCapacity(data.length + 1);
+         data[i] = data[i-1]; 
+      }
+        data[currentIndex] = element;
+        manyItems++;
+      
+      }
+      
+   
 
    }
 
@@ -138,7 +201,7 @@ public class DoubleArraySequence {
     * @param addend a sequence whose contents will be placed at the end of this
     *               sequence
     * @precondition The parameter, addend, is not null.
-    * @post condition The elements from addend have been placed at the end of this
+    * @post-condition The elements from addend have been placed at the end of this
     *                sequence. The current element of this sequence remains where
     *                it was, and the addend is also unchanged.
     * @exception NullPointerException Indicates that addend is null.
@@ -147,8 +210,21 @@ public class DoubleArraySequence {
     * @note An attempt to increase the capacity beyond Integer.MAX_VALUE will cause
     *       an arithmetic overflow that will cause the sequence to fail.
     **/
-   public void addAll(DoubleArraySequence addend) {
-
+   public void addAll(DoubleArraySequence addend){  
+      if(addend == null){
+         throw new NullPointerException("addend cannot be null");
+      }
+ 
+      //double[] temp = new double[manyItems + addend.manyItems]; 
+      ensureCapacity(manyItems + addend.manyItems);
+      for(int i = 0; i < manyItems + 1; i++){
+         data[i] = data[i];
+      }
+      for(int j = manyItems, k = 0; j < data.length && k < addend.data.length; j++, k++){ 
+         data[j] = addend.data[k]; 
+         //currentIndex++;
+      }
+      manyItems += addend.manyItems;  
    }
 
    /**
@@ -190,7 +266,12 @@ public class DoubleArraySequence {
     *       sequence to fail.
     **/
    public static DoubleArraySequence catenation(DoubleArraySequence s1, DoubleArraySequence s2) {
-      return null;
+      if(s1 == null || s2 == null){
+         throw new NullPointerException("s1 and s2 cannot be null");
+      }
+      DoubleArraySequence temp = new DoubleArraySequence(s1); 
+      temp.addAll(s2); 
+      return temp; 
 
    }
 
@@ -205,7 +286,14 @@ public class DoubleArraySequence {
     *                             int[minimumCapacity].
     **/
    public void ensureCapacity(int minimumCapacity) {
+      if (minimumCapacity > data.length){
+         double[] temp = new double[minimumCapacity];
+         for(int i = 0; i < data.length; i++){
+            temp[i] = data[i]; 
+         }
+         data = temp;
 
+      }
    }
 
    /**
@@ -231,7 +319,12 @@ public class DoubleArraySequence {
     *                                  so getCurrent may not be called.
     **/
    public double getCurrent() {
-      return 0.0;
+      if(!isCurrent()){
+         throw new IllegalStateException();
+      }else{
+         return data[currentIndex]; 
+      }
+      
    }
 
    /**
@@ -261,7 +354,18 @@ public class DoubleArraySequence {
     **/
    public void removeCurrent() {
 
-   }
+      if(currentIndex != manyItems){
+				for(int i = currentIndex; i<manyItems-1; i++)
+				{
+					data[i] = data[i+1];
+				}
+				manyItems--;
+
+      }else{ 
+			throw new IllegalStateException("There is no current element");
+		}
+   }              
+   
 
    /**
     * Determine the number of elements in this sequence.
@@ -298,6 +402,16 @@ public class DoubleArraySequence {
     *                             capacity.
     **/
    public void trimToSize() {
+      double[ ] trimmedArray;
+      
+      if (data.length != manyItems){
+         trimmedArray = new double[manyItems];
+         
+         for(int i = 0; i < manyItems; i++){
+            trimmedArray[i] = data[i]; 
+         }
+         data = trimmedArray;
+      }
 
    }
 
