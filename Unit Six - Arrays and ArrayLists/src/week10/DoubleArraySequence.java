@@ -50,7 +50,6 @@ public class DoubleArraySequence {
        manyItems = 0; 
        currentIndex = 0; 
        data = new double[DEFAULT_CAPACITY]; 
-    //DONE
    }
 
    /**
@@ -75,7 +74,6 @@ public class DoubleArraySequence {
        manyItems = 0; 
        currentIndex = 0; 
        data = new double[initialCapacity]; 
-       //DONE
    }
 
    /**
@@ -246,7 +244,6 @@ public class DoubleArraySequence {
           throw new IllegalStateException("No Current Element.");
       } 
         currentIndex++; 
-      //DONE
    }
 
    /**
@@ -273,10 +270,6 @@ public class DoubleArraySequence {
       temp.addAll(s2); 
       temp.setCurrentIndex(temp.size());
       return temp; 
-
-      /**for(int i = 0; i < s2.manyItems; i++){
-      
-      }**/
 
    }
 
@@ -311,7 +304,6 @@ public class DoubleArraySequence {
     **/
    public int getCapacity() {
       return data.length;
-      //DONE
    }
 
    /**
@@ -342,7 +334,7 @@ public class DoubleArraySequence {
     **/
    public boolean isCurrent() { // see if sequence has a specified current element
         return currentIndex != manyItems; 
-        //DONE
+      
    }
 
    /**
@@ -386,7 +378,6 @@ public class DoubleArraySequence {
    public int size() { // Determine the number of elements in this sequence.
 
       return manyItems;
-      //DONE
    }
 
    /**
@@ -399,7 +390,6 @@ public class DoubleArraySequence {
     **/
    public void start() {
         currentIndex = 0; 
-        //DONE
    }
 
    /**
