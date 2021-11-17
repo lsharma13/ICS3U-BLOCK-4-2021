@@ -131,15 +131,17 @@ public class DoubleArraySequence {
       
       }
      
-   }else{  
-      int max = DEFAULT_CAPACITY - manyItems; 
-      ensureCapacity(manyItems + max);
-		data[currentIndex+1] = d;
-		manyItems++;
+   }else if(manyItems + 1 > data.length){  
+      ensureCapacity(data.length * 2);
+      data[currentIndex + 1] = d;
       currentIndex++; 
+      manyItems++; 
+   
+   }
+         
    }
 
-}
+
    
 
 
@@ -181,9 +183,9 @@ public class DoubleArraySequence {
          
          }
         
-      }else{  
+      }else if(manyItems + 1 > data.length){  
+         ensureCapacity(manyItems * 2);
         for(int i = manyItems; i > currentIndex; i--){
-         ensureCapacity(data.length + 1);
          data[i] = data[i-1]; 
       }
         data[currentIndex] = element;
@@ -215,14 +217,12 @@ public class DoubleArraySequence {
          throw new NullPointerException("addend cannot be null");
       }
  
-      //double[] temp = new double[manyItems + addend.manyItems]; 
-      ensureCapacity(manyItems + addend.manyItems);
+       ensureCapacity(manyItems + addend.manyItems);
       for(int i = 0; i < manyItems + 1; i++){
          data[i] = data[i];
       }
       for(int j = manyItems, k = 0; j < data.length && k < addend.data.length; j++, k++){ 
          data[j] = addend.data[k]; 
-         //currentIndex++;
       }
       manyItems += addend.manyItems;  
    }
@@ -271,7 +271,12 @@ public class DoubleArraySequence {
       }
       DoubleArraySequence temp = new DoubleArraySequence(s1); 
       temp.addAll(s2); 
+      temp.setCurrentIndex(temp.size());
       return temp; 
+
+      /**for(int i = 0; i < s2.manyItems; i++){
+      
+      }**/
 
    }
 
@@ -354,17 +359,22 @@ public class DoubleArraySequence {
     **/
    public void removeCurrent() {
 
-      if(currentIndex != manyItems){
-				for(int i = currentIndex; i<manyItems-1; i++)
-				{
+      if(isCurrent() == false){ 
+			throw new IllegalStateException("There is no current element");
+         }
+
+      if(currentIndex == manyItems){
+         throw new IllegalStateException("There is no current element"); 
+      }
+
+      	for(int i = currentIndex; i < manyItems - 1; i++){
 					data[i] = data[i+1];
 				}
 				manyItems--;
 
-      }else{ 
-			throw new IllegalStateException("There is no current element");
-		}
-   }              
+         }
+   
+          
    
 
    /**
